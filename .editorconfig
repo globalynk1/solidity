@@ -1,23 +1,25 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
 root = true
 
 [*]
-charset = utf-8
-end_of_line = lf
-insert_final_newline = true
 trim_trailing_whitespace = true
-
-[*.{cpp,h}]
-indent_style = tab
-indent_size = 4
-
-[*.{py,rst,sh,yml}]
+insert_final_newline = true
 indent_style = space
 indent_size = 4
 
-[*.{sol,yul}]
-indent_style = space
+# CA2254: The logging message template should not vary between calls to 'LoggerExtensions.LogDebug(ILogger, string?, params object?[])'
+dotnet_diagnostic.CA2254.severity = none
+dotnet_diagnostic.VSTHRD002.severity = none
+dotnet_diagnostic.VSTHRD003.severity = none
+dotnet_diagnostic.VSTHRD105.severity = none
+dotnet_diagnostic.VSTHRD110.severity = none
+dotnet_diagnostic.VSTHRD200.severity = none
+
+dotnet_sort_system_directives_first = true
+
+[*.cs]
 indent_size = 4
 
-[*.{txt,cmake,json}]
-indent_style = tab
-indent_size = 4
+[*.{yml,yaml}]
+indent_size = 2

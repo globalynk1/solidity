@@ -1,92 +1,127 @@
-# The Solidity Contract-Oriented Programming Language
+# omnisharp-roslyn
 
-[![Matrix Chat](https://img.shields.io/badge/Matrix%20-chat-brightgreen?style=plastic&logo=matrix)](https://matrix.to/#/#ethereum_solidity:gitter.im)
-[![Gitter Chat](https://img.shields.io/badge/Gitter%20-chat-brightgreen?style=plastic&logo=gitter)](https://gitter.im/ethereum/solidity)
-[![Solidity Forum](https://img.shields.io/badge/Solidity_Forum%20-discuss-brightgreen?style=plastic&logo=discourse)](https://forum.soliditylang.org/)
-[![X Follow](https://img.shields.io/twitter/follow/solidity_lang?style=plastic&logo=x)](https://X.com/solidity_lang)
-[![Mastodon Follow](https://img.shields.io/mastodon/follow/000335908?domain=https%3A%2F%2Ffosstodon.org%2F&logo=mastodon&style=plastic)](https://fosstodon.org/@solidity)
+[![Build Status](https://dev.azure.com/omnisharp/Builds/_apis/build/status/OmniSharp.omnisharp-roslyn?branchName=master)](https://dev.azure.com/omnisharp/Builds/_build/latest?definitionId=2&branchName=master)
 
-You can talk to us on Gitter and Matrix, tweet at us on X (previously Twitter) or create a new topic in the Solidity forum. Questions, feedback, and suggestions are welcome!
+## Introduction
 
-Solidity is a statically typed, contract-oriented, high-level language for implementing smart contracts on the Ethereum platform.
+OmniSharp is a .NET development platform based on [Roslyn](https://github.com/dotnet/roslyn) workspaces. It provides project dependencies and C# language services to various IDEs and plugins.
 
-For a good overview and starting point, please check out the official [Solidity Language Portal](https://soliditylang.org).
+OmniSharp is built with the [.NET Core SDK](https://dot.net/) on Windows and [Mono](http://www.mono-project.com/) on OSX/Linux. It targets both the _net6.0_ and _net472_ target frameworks. The _net6.0_ build requires a .NET SDK version _>=6.0_. When using the _net472_ build on OSX/Linux, _Mono_ version _>=6.4.0_ is required and must be globally installed on the system.
 
-## Table of Contents
+For Arch Linux users, you need package [mono-msbuild](https://archlinux.org/packages/extra/x86_64/mono-msbuild/) (>= 16.3).
 
-- [Background](#background)
-- [Build and Install](#build-and-install)
-- [Example](#example)
-- [Documentation](#documentation)
-- [Development](#development)
-- [Maintainers](#maintainers)
-- [License](#license)
-- [Security](#security)
+In addition, if you need the HTTP interface and you want to run on Linux, you'll also need to make sure that you have [libuv](http://libuv.org) installed. See also https://github.com/OmniSharp/omnisharp-roslyn/issues/1202#issuecomment-421543905 .
 
-## Background
+## What's new
 
-Solidity is a statically-typed curly-braces programming language designed for developing smart contracts
-that run on the Ethereum Virtual Machine. Smart contracts are programs that are executed inside a peer-to-peer
-network where nobody has special authority over the execution, and thus they allow anyone to implement tokens of value,
-ownership, voting, and other kinds of logic.
+See our [change log](https://github.com/OmniSharp/omnisharp-roslyn/blob/master/CHANGELOG.md) for all of the updates.
 
-When deploying contracts, you should use the latest released version of
-Solidity. This is because breaking changes, as well as new features and bug fixes, are
-introduced regularly. We currently use a 0.x version
-number [to indicate this fast pace of change](https://semver.org/#spec-item-4).
+## Using OmniSharp
 
-## Build and Install
+OmniSharp ships in two flavors:
 
-Instructions about how to build and install the Solidity compiler can be
-found in the [Solidity documentation](https://docs.soliditylang.org/en/latest/installing-solidity.html#building-from-source).
+-   Stdio server
+-   HTTP server
 
+### Downloading OmniSharp
 
-## Example
+When using OmniSharp with an editor extension (e.g. VIM, Emacs, VS Code), the extension will download or bundle OmniSharp automatically. If you wish to download OmniSharp manually though, follow the steps below.
 
-A "Hello World" program in Solidity is of even less use than in other languages, but still:
+#### Stable releases
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity >=0.6.0 <0.9.0;
+Stable releases are published using [GitHub releases](https://github.com/OmniSharp/omnisharp-roslyn/releases). Each release contains a set of binaries for various operating systems and processing architectures.
 
-contract HelloWorld {
-    function helloWorld() external pure returns (string memory) {
-        return "Hello, World!";
-    }
+#### Pre-releases
+
+Pre-release versions are available in Azure Blob Storage, they can be viewed using the following URL `https://roslynomnisharp.blob.core.windows.net/releases?restype=container&comp=list&prefix={version}`, where the `{version}` placeholder can be found in the [changelog](https://github.com/OmniSharp/omnisharp-roslyn/blob/master/CHANGELOG.md). For example, all `1.37.x` versions (including all betas and prereleases such as `1.37.4-beta.5`) can be viewed using `https://roslynomnisharp.blob.core.windows.net/releases?restype=container&comp=list&prefix=1.37`. Please note that the listing is limited to 5000 entries.
+
+Every merge to `master` is automatically published to this feed and individual release is then available using the following URL convention:
+`https://roslynomnisharp.blob.core.windows.net/releases/{version}/{packagename}-{os/arch}.{ext}`
+
+-   Version is auto incremented and is visible in the travis or appveyor build output
+-   Package Name would be either `omnisharp` or `omnisharp.http`
+-   `os/arch` will be one of the following:
+    -   `win-x64`
+    -   `win-x86`
+    -   `win-arm64`
+    -   `linux-x64`
+    -   `linux-x86`
+    -   `linux-musl-x64`
+    -   `linux-arm64`
+    -   `linux-musl-arm64`
+    -   `osx`
+    -   `mono` (Requires global mono installed)
+-   Extensions are archive specific, windows will be `zip` and all others will be `tar.gz`.
+
+### Building
+
+**On Windows**:
+
+```
+> ./build.ps1
+```
+
+**On Linux / Unix**:
+
+```
+$ ./build.sh
+```
+
+You can find the output under `artifacts/publish/OmniSharp/<runtime id>/<target framework>/`.
+
+The executable is either `OmniSharp.exe` or `OmniSharp`.
+
+For more details, see [Build](https://github.com/OmniSharp/omnisharp-roslyn/blob/master/BUILD.md).
+
+### VS Code
+
+Add the following setting to your [User Settings](https://code.visualstudio.com/Docs/customization/userandworkspace).
+
+```JSON
+{
+  "omnisharp.path": "<Path to the omnisharp executable>"
 }
 ```
 
-To get started with Solidity, you can use [Remix](https://remix.ethereum.org/), which is a
-browser-based IDE. Here are some example contracts:
+The above option can also be set to:
 
-1. [Voting](https://docs.soliditylang.org/en/latest/solidity-by-example.html#voting)
-2. [Blind Auction](https://docs.soliditylang.org/en/latest/solidity-by-example.html#blind-auction)
-3. [Safe remote purchase](https://docs.soliditylang.org/en/latest/solidity-by-example.html#safe-remote-purchase)
-4. [Micropayment Channel](https://docs.soliditylang.org/en/latest/solidity-by-example.html#micropayment-channel)
+-   "latest" - To consume the latest build from the master branch
+-   A specific version number like `1.29.2-beta.60`
 
-## Documentation
+In order to be able to attach a debugger, add the following setting to your [User or Workspace settings](https://code.visualstudio.com/Docs/customization/userandworkspace):
 
-The Solidity documentation is hosted using [Read the Docs](https://docs.soliditylang.org).
+```JSON
+{
+  "omnisharp.waitForDebugger": true
+}
+```
 
-## Development
+This will print the OmniSharp process ID in the VS Code OmniSharp output panel and pause the start of the server until a debugger is attached to this process. This is equivalent to launching OmniSharp from a command line with the `--debug` flag.
 
-Solidity is still under development. Contributions are always welcome!
-Please follow the
-[Developer's Guide](https://docs.soliditylang.org/en/latest/contributing.html)
-if you want to help.
+### Configuration
 
-You can find our current feature and bug priorities for forthcoming
-releases in the [projects section](https://github.com/ethereum/solidity/projects).
+OmniSharp provides a rich set of hierarchical configuration options, controlled via startup arguments, environment variables and `omnisharp.json` file. For more details please visit the [Configuration Options](https://github.com/OmniSharp/omnisharp-roslyn/wiki/Configuration-Options) section of the wiki.
 
-## Maintainers
-The Solidity programming language and compiler are open-source community projects governed by a core team.
-The core team is sponsored by the [Ethereum Foundation](https://ethereum.foundation/).
+## Help wanted!
+
+We have slack room as well. [Get yourself invited](https://omnisharp.herokuapp.com/): [here](https://omnisharp.herokuapp.com/)
 
 ## License
-Solidity is licensed under [GNU General Public License v3.0](LICENSE.txt).
 
-Some third-party code has its [own licensing terms](cmake/templates/license.h.in).
+Copyright © .NET Foundation, and contributors.
 
-## Security
+OmniSharp is provided as-is under the MIT license. For more information see [LICENSE](https://github.com/OmniSharp/omnisharp-roslyn/blob/master/license.md).
 
-The security policy may be [found here](SECURITY.md).
+## Code of Conduct
+
+This project has adopted the code of conduct defined by the [Contributor Covenant](http://contributor-covenant.org/)
+to clarify expected behavior in our community.
+For more information see the [.NET Foundation Code of Conduct](http://www.dotnetfoundation.org/code-of-conduct).
+
+## Contribution License Agreement
+
+By signing the [CLA](https://cla.dotnetfoundation.org/OmniSharp/omnisharp-roslyn), the community is free to use your contribution to .NET Foundation projects.
+
+## .NET Foundation
+
+This project is supported by the [.NET Foundation](http://www.dotnetfoundation.org).

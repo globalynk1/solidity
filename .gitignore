@@ -1,69 +1,61 @@
-/commit_hash.txt
-/prerelease.txt
-
-# Auth config for ppa release
-/.release_ppa_auth
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-*.pyc
-__pycache__/
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# ignore git mergetool backup files
-*.orig
-
-# Executables
-*.exe
-*.out
-*.app
-
-# Build directory
-/cmake-build-*/
-/build*/
-emscripten_build/
-/docs/_build/
-/docs/_static/robots.txt
-/deps/
-
-# Reports and benchmarks
-/reports/
-/benchmarks/
-
-# vim stuff
-[._]*.sw[a-p]
-[._]sw[a-p]
-
-# emacs stuff
-*~
-
-# IDE files
-/.idea/
-/.vscode/
-/browse.VC.db
-/CMakeLists.txt.user
-/CMakeSettings.json
+[Oo]bj/
+[Bb]in/
+TestResults/
+.nuget/
+*.sln.ide/
+_ReSharper.*/
+artifacts/
+PublishProfiles/
+*.user
+*.suo
+*.cache
+*.docstates
+_ReSharper.*
+nuget.exe
+*net45.csproj
+*net451.csproj
+*k10.csproj
+*.psess
+*.vsp
+*.pidb
+*.userprefs
+*DS_Store
+*.ncrunchsolution
+*.*sdf
+*.ipch
+*.sln.ide
+debugSettings.json
+buildlog
 /.vs
-/.cproject
-/.project
+*.lock.json
+/omnisharp*.tar.gz
+scripts/Omnisharp*
+.msbuild-*/
+.msbuild/
 
-# OS specific local files
-.DS_Store
-Thumbs.db
+# NuGet
+*.nuget.targets
+
+# Build folder
+.dotnet/
+.dotnet-legacy/
+.dotnet-future/
+.mono/
+tools/*
+!tools/packages.config
+
+# Test assets
+test-assets/**/tools/*
+!test-assets/**/tools/packages.config
+
+# VS Code
+/.vscode/settings.json
+/.vscode/launch.json
+
+# VS
+launchSettings.json
+
+# Rider
+.idea/
+test-assets/**/nugets
+*.binlog
